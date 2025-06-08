@@ -31,7 +31,7 @@ type SimpleLogger struct {
 	logger   *log.Logger
 }
 
-func NewSimpleLogger(minLevel LogLevel) Logger {
+func RequestLogger(minLevel LogLevel) Logger {
 	return &SimpleLogger{
 		minLevel: minLevel,
 		// logger: log.New(os.Stdout, "", 0)
@@ -73,7 +73,7 @@ func (s *SimpleLogger) SetLevel(level LogLevel) {
 }
 
 /**
-logger := NewSimpleLogger(INFO) // nivel mínimo INFO
+logger := RequestLogger(INFO) // nivel mínimo INFO
 
 logger.Debug("Este mensaje no se mostrará porque nivel mínimo es INFO")
 logger.Info("Mensaje informativo")
