@@ -1,11 +1,11 @@
 package main
 
 import (
+	"anonymous-complaints/internal/config"
 	"anonymous-complaints/internal/infrastructure/persistence"
 	"anonymous-complaints/internal/infrastructure/server"
 	"anonymous-complaints/internal/pkg/logger"
 	"log"
-	"os"
 
 	"github.com/joho/godotenv"
 )
@@ -18,7 +18,10 @@ func init() {
 }
 
 func main() {
-	logLevel := os.Getenv("LOG_LEVEL")
+	cfg := config.ConfigService()
+
+	logLevel := cfg.GetAndCheck("LOG_LEVEL")
+
 	var level logger.LogLevel
 	switch logLevel {
 	case "DEBUG":
@@ -32,7 +35,7 @@ func main() {
 	}
 	logg := logger.RequestLogger(level)
 
-	mongoURI := os.Getenv("MONGO_URI")
+	mongoURI := cfg.GetAndCheck("MONGO_URI")
 
 	mongoClient, err := persistence.NewMongoClient(mongoURI)
 
@@ -46,5 +49,6 @@ func main() {
 	dbName := "agnostic"
 
 	srv := server.NewFiberServer(logg, mongoClient, dbName)
-	srv.Start(os.Getenv("SERVER_PORT"))
+	port := cfg.GetAndCheck("SERVER_PORT")
+	srv.Start(port)
 }
