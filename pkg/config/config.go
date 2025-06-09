@@ -79,11 +79,3 @@ func (c *configService) GetBoolAndCheck(key string) bool {
 	}
 	return val == "true" || val == "1"
 }
-
-/**
-cfg := config.NewConfigService()
-
-port := cfg.GetAndCheck("PORT")
-debugMode := cfg.GetBool("DEBUG_MODE")
-timeout := cfg.GetNumber("REQUEST_TIMEOUT")
-*/

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"anonymous-complaints/internal/config"
-	"anonymous-complaints/internal/infrastructure/persistence"
-	"anonymous-complaints/internal/infrastructure/server"
-	"anonymous-complaints/internal/pkg/logger"
+	"anonymous-complaints/pkg/config"
+	"anonymous-complaints/pkg/db/mongodb"
+	"anonymous-complaints/pkg/logger"
+	"anonymous-complaints/pkg/server"
 	"log"
 
 	"github.com/joho/godotenv"
@@ -17,6 +17,11 @@ func init() {
 	}
 }
 
+// @title API de Quejas Anónimas
+// @version 1.0
+// @description Esta es la API para manejar usuarios y quejas anónimas.
+// @host localhost:8000
+// @BasePath /
 func main() {
 	cfg := config.ConfigService()
 
@@ -37,7 +42,7 @@ func main() {
 
 	mongoURI := cfg.GetAndCheck("MONGO_URI")
 
-	mongoClient, err := persistence.NewMongoClient(mongoURI)
+	mongoClient, err := mongodb.MongoClient(mongoURI)
 
 	if err != nil {
 		logg.Error("Failed to connect to MongoDB: " + err.Error())

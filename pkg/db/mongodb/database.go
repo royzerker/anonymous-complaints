@@ -1,4 +1,4 @@
-package persistence
+package mongodb
 
 import (
 	"context"
@@ -8,11 +8,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type MongoClient struct {
+type IMongoClient struct {
 	Client *mongo.Client
 }
 
-func NewMongoClient(uri string) (*mongo.Client, error) {
+func MongoClient(uri string) (*mongo.Client, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -21,8 +21,11 @@ func NewMongoClient(uri string) (*mongo.Client, error) {
 		return nil, err
 	}
 
-	// Verificar conexión
+	/**
+	* Verificar conexión
+	 */
 	err = client.Ping(ctx, nil)
+
 	if err != nil {
 		return nil, err
 	}
